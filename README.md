@@ -12,30 +12,24 @@ A static, multi-page website ready for GitHub Pages. No build step or server is 
 
 ## Publish on GitHub Pages
 1. Create a new GitHub repository (for example `neeranjali`).
-2. Upload **the contents of this folder** to the repository root.
+2. **Extract the ZIP first. Do not upload the ZIP file itself.** Upload the **contents of this folder** to the repository root.
 3. Commit the files.
 4. Open **Settings → Pages**.
 5. Under **Build and deployment**, choose **Deploy from a branch**.
 6. Select branch **main** and folder **/(root)**, then Save.
 7. GitHub will show the public site URL after deployment.
 
-## Google Drive videos
-The site embeds these shared Drive videos using Google Drive's preview player:
-- Approach / drive: `132fHfk3wX1OS71qmmRNikA3xJ6RykXp2`
-- Scenic drone: `14OL0zx6yKRPvOmWKGDLzs9GfCUqp4U1x`
+## Local web-optimised videos
+The site now plays bundled MP4 files directly with the browser's native HTML5 video player:
+- `assets/videos/approach-drive.mp4` — 540×960 portrait, H.264/AAC, ~6.8 MB
+- `assets/videos/drone-view.mp4` — 854×480 landscape, H.264/AAC, ~6.0 MB
 
-For visitors to play them, the Drive files must remain shared as **Anyone with the link → Viewer**.
+The drone file has been physically rotated into the correct landscape orientation, so no CSS rotation workaround or Google Drive preview player is required. Both files use `faststart` metadata for quicker progressive playback on GitHub Pages.
 
-## Adding more videos from the Drive folder
-Google Drive folder contents could not be downloaded programmatically in the generation environment, so the two explicitly supplied videos are embedded and the brochure/site photographs are bundled locally.
+These web versions are also small enough for GitHub's browser-based file upload flow. The downloadable brochure has been compressed for web delivery as well. If you later add much larger videos, use a local Git clone + push, Git LFS, or a dedicated video/CDN host.
 
-For the best GitHub Pages experience, convert additional `.MOV` files to `.mp4` (H.264 video + AAC audio), place them under `assets/media/`, and use a standard HTML `<video>` element. MOV playback is not reliable across Chrome/Android/Windows.
-
-Alternatively, for another public Drive video, use the existing pattern in the HTML:
-```html
-<article class="video-card" data-video-id="GOOGLE_DRIVE_FILE_ID">...</article>
-```
-The JavaScript automatically opens the Drive preview in a modal.
+## Adding more videos
+Convert additional `.MOV` or large phone videos to `.mp4` using H.264 video + AAC audio, enable `faststart`, and place them in `assets/videos/`. Then add a matching entry to `videoMeta` in `assets/js/main.js` and use `data-video="your-key"` on the video card or button.
 
 ## Images
 The included site imagery is optimized as WebP for faster page loads. The PDF brochure is included in `downloads/`.

@@ -8,9 +8,26 @@ const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isInte
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 
 // Video modal uses public Google Drive preview URLs so GitHub Pages stays lightweight.
-const vModal=document.querySelector('.video-modal'); const frame=document.querySelector('#videoFrame');
-document.querySelectorAll('[data-video-id]').forEach(el=>el.addEventListener('click',()=>{const id=el.dataset.videoId;frame.src=`https://drive.google.com/file/d/${id}/preview`;vModal.classList.add('open');document.body.style.overflow='hidden'}));
-function closeVideo(){if(!vModal)return;vModal.classList.remove('open');frame.src='';document.body.style.overflow=''}
+const videoMeta={
+  '132fHfk3wX1OS71qmmRNikA3xJ6RykXp2':{rotateLandscape:false},
+  '14OL0zx6yKRPvOmWKGDLzs9GfCUqp4U1x':{rotateLandscape:true}
+};
+const vModal=document.querySelector('.video-modal');
+const frame=document.querySelector('#videoFrame');
+document.querySelectorAll('[data-video-id]').forEach(el=>el.addEventListener('click',()=>{
+  const id=el.dataset.videoId;
+  const meta=videoMeta[id]||{};
+  vModal?.classList.toggle('rotate-landscape',!!meta.rotateLandscape);
+  frame.src=`https://drive.google.com/file/d/${id}/preview`;
+  vModal.classList.add('open');
+  document.body.style.overflow='hidden';
+}));
+function closeVideo(){
+  if(!vModal)return;
+  vModal.classList.remove('open','rotate-landscape');
+  frame.src='';
+  document.body.style.overflow='';
+}
 document.querySelector('[data-close-video]')?.addEventListener('click',closeVideo);vModal?.addEventListener('click',e=>{if(e.target===vModal)closeVideo()});
 
 const lbox=document.querySelector('.lightbox'); const lboxImg=lbox?.querySelector('img');
